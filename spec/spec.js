@@ -1,4 +1,4 @@
-describe('Jasmine Helper', function() {
+describe('Fixtury', function() {
   describe('clean', function() {
     it ('has true as default', function() {
       // given
@@ -162,8 +162,10 @@ describe('Jasmine Helper', function() {
     });
 
     describe('#context', function() {
-      it ('works', function() {
-        expect(true).toBeTruthy();
+      context('using it', function() {
+        it ('works', function() {
+          expect(true).toBeTruthy();
+        });
       });
     });
 
@@ -363,15 +365,32 @@ describe('Jasmine Helper', function() {
     });
 
     describe('#input', function() {
-      it ('creates a input with the given parameters', function() {
-        // given
-        var options = { type: 'text', name: 'name', times: 2 };
+      context('without the forced type', function() {
+        it ('creates an input with the given parameters', function() {
+          // given
+          var options    = { type: 'text', name: 'name', times: 2 },
+              forcedType = undefined;
 
-        // when
-        var element = Helper.input(options);
+          // when
+          var element = Helper.input(options, forcedType);
 
-        // then
-        expect(element).toEqual('<input type="text" name="name" /><input type="text" name="name" />');
+          // then
+          expect(element).toEqual('<input type="text" name="name" /><input type="text" name="name" />');
+        });
+      });
+
+      context('with the forced type', function() {
+        it ('creates a raw input', function() {
+          // given
+          var options    = {},
+              forcedType = 'forced';
+
+          // when
+          var element = Helper.input(options, forcedType);
+
+          // then
+          expect(element).toEqual('<input type="forced" />');
+        });
       });
     });
 
@@ -590,6 +609,19 @@ describe('Jasmine Helper', function() {
 
           // then
           expect(proc).toThrow(new Error('You cannot set the "type" using an alias!'));
+        });
+      });
+
+      context('with undefined hash', function() {
+        it ('ignores the verifications', function() {
+          // given
+          var options = undefined;
+
+          // when
+          var proc = function() { Helper._verify(options); };
+
+          // then
+          expect(proc).not.toThrow(new Error('options is undefined'));
         });
       });
     });
