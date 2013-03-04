@@ -19,10 +19,21 @@ describe('Fixtury', function() {
         var input = Helper.text({});
 
         // when
-        var element = Helper.append(input);
+        Helper.append(input);
 
         // then
         expect($('.fixtury').children('input')).toExist();
+      });
+
+      it ('returns the appended element', function() {
+        // given
+        var input = Helper.text({});
+
+        // when
+        var element = Helper.append(input);
+
+        // then
+        expect(element).toBe($('.fixtury').children('input'));
       });
     });
 
@@ -241,6 +252,19 @@ describe('Fixtury', function() {
       });
     });
 
+    describe('#fieldset', function() {
+      it ('creates the fieldset', function() {
+        // given
+        var options = { value: 'value', html: 'html' };
+
+        // when
+        var element = Helper.fieldset(options);
+
+        // then
+        expect(element).toEqual('<fieldset value="value">html</fieldset>');
+      });
+    });
+
     describe('#form', function() {
       it ('is created', function() {
         // given
@@ -364,6 +388,32 @@ describe('Fixtury', function() {
       });
     });
 
+    describe('#hidden', function() {
+      it ('creates a hidden field', function() {
+        // given
+        var options = {};
+
+        // when
+        var element = Helper.hidden(options);
+
+        // then
+        expect(element).toEqual('<input type="hidden" />');
+      });
+
+      context('with type attribute', function() {
+        it ('fails with exception', function() {
+          // given
+          var options = { type: 'hidden' };
+
+          // when
+          var proc = function() { Helper.hidden(options); };
+
+          // then
+          expect(proc).toThrow(new Error('You cannot set the "type" using an alias!'));
+        });
+      });
+    });
+
     describe('#input', function() {
       context('without the forced type', function() {
         it ('creates an input with the given parameters', function() {
@@ -391,6 +441,32 @@ describe('Fixtury', function() {
           // then
           expect(element).toEqual('<input type="forced" />');
         });
+      });
+    });
+
+    describe('#label', function() {
+      it ('creates the label', function() {
+        // given
+        var options = { value: 'value', html: 'html' };
+
+        // when
+        var element = Helper.label(options);
+
+        // then
+        expect(element).toEqual('<label value="value">html</label>');
+      });
+    });
+
+    describe('#legend', function() {
+      it ('creates the legend', function() {
+        // given
+        var options = { value: 'value', html: 'html' };
+
+        // when
+        var element = Helper.legend(options);
+
+        // then
+        expect(element).toEqual('<legend value="value">html</legend>');
       });
     });
 
@@ -505,6 +581,32 @@ describe('Fixtury', function() {
       });
     });
 
+    describe('#password', function() {
+      it ('creates a password field', function() {
+        // given
+        var options = {};
+
+        // when
+        var element = Helper.password(options);
+
+        // then
+        expect(element).toEqual('<input type="password" />');
+      });
+
+      context('with type attribute', function() {
+        it ('fails with exception', function() {
+          // given
+          var options = { type: 'password' };
+
+          // when
+          var proc = function() { Helper.password(options); };
+
+          // then
+          expect(proc).toThrow(new Error('You cannot set the "type" using an alias!'));
+        });
+      });
+    });
+
     describe('#repeat', function() {
       it ('repeats the given content the given times', function() {
         // given
@@ -572,6 +674,32 @@ describe('Fixtury', function() {
       });
     });
 
+    describe('#submit', function() {
+      it ('creates a submit field', function() {
+        // given
+        var options = {};
+
+        // when
+        var element = Helper.submit(options);
+
+        // then
+        expect(element).toEqual('<input type="submit" />');
+      });
+
+      context('with type attribute', function() {
+        it ('fails with exception', function() {
+          // given
+          var options = { type: 'submit' };
+
+          // when
+          var proc = function() { Helper.submit(options); };
+
+          // then
+          expect(proc).toThrow(new Error('You cannot set the "type" using an alias!'));
+        });
+      });
+    });
+
     describe('#text', function() {
       it ('creates a text field', function() {
         // given
@@ -595,6 +723,19 @@ describe('Fixtury', function() {
           // then
           expect(proc).toThrow(new Error('You cannot set the "type" using an alias!'));
         });
+      });
+    });
+
+    describe('#textarea', function() {
+      it ('creates a textarea field', function() {
+        // given
+        var options = { html: 'html' };
+
+        // when
+        var element = Helper.textarea(options);
+
+        // then
+        expect(element).toEqual('<textarea>html</textarea>');
       });
     });
 
