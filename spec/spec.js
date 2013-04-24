@@ -14,9 +14,11 @@ describe('Fixtury', function() {
 
   describe('methods', function() {
     describe('#append', function() {
+      afterEach(function() { Helper.clear(); });
+
       it ('appends the content to the fixtury element', function() {
         // given
-        var input = Helper.text({});
+        var input = Helper.text();
 
         // when
         Helper.append(input);
@@ -27,13 +29,26 @@ describe('Fixtury', function() {
 
       it ('returns the appended element', function() {
         // given
-        var input = Helper.text({});
+        var input = Helper.text();
 
         // when
         var element = Helper.append(input);
 
         // then
         expect(element).toBe($('.fixtury').children('input'));
+      });
+
+      context('when placeholder has some content', function() {
+        it ('appends without override all placeholder', function() {
+          // given
+          Helper.append(Helper.text());
+
+          // when
+          Helper.append(Helper.text());
+
+          // then
+          expect($('.fixtury')).toHaveHtml('<input type="text"><input type="text">');
+        });
       });
     });
 
@@ -411,6 +426,21 @@ describe('Fixtury', function() {
           // then
           expect(proc).toThrow(new Error('You cannot set the "type" using an alias!'));
         });
+      });
+    });
+
+    describe('#html', function() {
+      afterEach(function() { Helper.clear(); });
+
+      it ('replaces all content with the given one', function() {
+        // given
+        Helper.append('init');
+
+        // when
+        var element = Helper.html('replaced');
+
+        // then
+        expect($('.fixtury')).toHaveHtml('replaced');
       });
     });
 
