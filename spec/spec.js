@@ -79,35 +79,103 @@ describe('Fixtury', function() {
     });
 
     describe('#clear', function() {
-      context('with clean as false', function() {
-        beforeEach(function() { clean = false; });
-
-        it ('will not be executed', function() {
-          // given
-          var container = $('.fixtury').html('text');
-
-          // when
-          Helper.clear();
-
-          // then
-          expect(container).toHaveHtml('text');
-        });
-      });
-
       context('with clean as true', function() {
         beforeEach(function() { clean = true; });
 
-        it ('will be executed', function() {
-          clean = true;
+        context('without extra clear', function() {
+          it ('will clears the fixture container', function() {
+            // given
+            var container = $('.fixtury').html('some');
 
-          // given
-          var container = $('.fixtury').html('text');
+            // when
+            Helper.clear();
 
-          // when
-          Helper.clear();
+            // then
+            expect(container).not.toHaveText('some');
+          });
+        });
 
-          // then
-          expect(container).toBeEmpty();
+        context('with extra clear', function() {
+          context('as string', function() {
+            it ('will removes the passed element', function() {
+              // given
+              var element = $('<div id="target"></div>'),
+                  body    = $('body').append(element);
+
+              // when
+              Helper.clear('#target');
+
+              // then
+              expect(element).not.toExist();
+            });
+          });
+
+          context('as string', function() {
+            it ('will removes the passed element', function() {
+              // given
+              var element1 = $('<div id="target-1"></div>'),
+                  element2 = $('<div id="target-2"></div>'),
+                  body     = $('body').append(element1, element2);
+
+              // when
+              Helper.clear(['#target-1', '#target-2']);
+
+              // then
+              expect(element1).not.toExist();
+              expect(element2).not.toExist();
+            });
+          });
+        });
+      });
+
+      context('with clean as false', function() {
+        beforeEach(function() { clean = false; });
+
+        context('without extra clear', function() {
+          it ('will clears the fixture container', function() {
+            // given
+            var container = $('.fixtury').html('some');
+
+            // when
+            Helper.clear();
+
+            // then
+            expect(container).toHaveText('some');
+          });
+        });
+
+        context('with extra clear', function() {
+          context('as string', function() {
+            it ('will removes the passed element', function() {
+              // given
+              var element = $('<div id="target"></div>');
+
+              $('body').append(element);
+
+              // when
+              Helper.clear('#target');
+
+              // then
+              expect(element).toExist();
+            });
+          });
+
+          context('as string', function() {
+            it ('will removes the passed element', function() {
+              // given
+              var element1 = $('<div id="target-1"></div>'),
+                  element2 = $('<div id="target-2"></div>');
+
+              $('body').append(element1, element2);
+
+              // when
+              Helper.clear(['#target-1', '#target-2']);
+
+              // then
+              expect(element1).toExist();
+              expect(element2).toExist();
+            });
+          });
         });
       });
     });
